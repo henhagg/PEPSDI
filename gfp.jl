@@ -1,4 +1,5 @@
 # perform cd to PEPSDI directory
+cd("/home/henhagg/PEPSDI")
 
 # Required packages for formulating a model and do inference 
 using Distributions # For placing priors 
@@ -154,10 +155,10 @@ file_loc = init_file_loc(path_data, "Example/Gfp_model", multiple_ind=true)
 import Random
 Random.seed!(123)
 tune_part_data = init_pilot_run_info(pop_param_info,
-                                        n_particles_pilot=10,
-                                        n_samples_pilot=100, 
+                                        n_particles_pilot=300,
+                                        n_samples_pilot=500, 
                                         rho_list=[0.99],
-                                        n_times_run_filter=10,
+                                        n_times_run_filter=50,
                                         init_kappa=[5.704, 0.751, 2.079],
                                         init_sigma = [-1.6])
 
@@ -165,7 +166,7 @@ tune_part_data = init_pilot_run_info(pop_param_info,
 tune_particles_opt1(tune_part_data, pop_param_info, ind_param_info,
         file_loc, sde_mod, filter_opt, mcmc_sampler_ci, mcmc_sampler_kappa_sigma, pop_sampler_opt)
 
-n_samples = 100
+n_samples = 20000
 stuff = run_PEPSDI_opt1(n_samples, pop_param_info, ind_param_info, file_loc, sde_mod, 
         filter_opt, mcmc_sampler_ci, mcmc_sampler_kappa_sigma, pop_sampler_opt, pilot_id=1)
 status = "done"
