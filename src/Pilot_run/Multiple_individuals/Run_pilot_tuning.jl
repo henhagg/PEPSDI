@@ -80,7 +80,7 @@ function save_pilot_result(res_chains::ChainsMixed,
 
     # Nested function for writing result to disk 
     function write_file(data_val, col_names, file_save)
-        data_write = convert(DataFrame, data_val)
+        data_write = DataFrame(data_val, :auto)
         rename!(data_write, col_names)
         CSV.write(file_save, data_write)
     end
@@ -144,7 +144,7 @@ function save_pilot_result(res_chains::ChainsMixed,
                     [tune_part_data.n_particles_pilot], 
                     [tag_exp])
 
-    data_save = convert(DataFrame, data_val')
+    data_save = DataFrame(transpose(hcat(data_val)), :auto)
     rename!(data_save, name_col)
     CSV.write(file_info, data_save, append=append_data)
 
@@ -311,7 +311,7 @@ function check_if_pilot_exist(tune_part_data::TuneParticlesMixed, file_loc::File
         println("Sampler-type for pilot must be either standrad or alt")
     end
 
-    data_info = convert(Array{Real, 2}, CSV.read(file_info, DataFrame))
+    data_info = CSV.File(file_info) |> Tables.matrix
     n_row_file = size(data_info)[1]
     data_ind_vec = vcat(tune_part_data.init_mean, 
                         tune_part_data.init_scale, 
@@ -731,7 +731,7 @@ function save_tune_particle_data(n_particles, file_loc, rho, n_individuals, exp_
         mkpath(dir_save_tuning)
     end
     file_save = dir_save_tuning * "/Rho" * replace(string(rho), "." => "d") * ".csv"
-    data_save = convert(DataFrame, n_particles')
+    data_save = DataFrame(transpose(hcat(n_particles)), :auto)
     rename!(data_save, "Ind" .* string.(1:n_individuals))
     CSV.write(file_save, data_save)
 end

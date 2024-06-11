@@ -195,9 +195,10 @@ function write_result_file(mcmc_chains::ChainsMixed,
     end
 
     # Write simple-table values 
-    mean_data = convert(DataFrame, mcmc_chains.mean')
-    scale_data = convert(DataFrame, mcmc_chains.scale')
-    kappa_sigma_data = convert(DataFrame, mcmc_chains.kappa_sigma')
+    mean_data = DataFrame(transpose(hcat(mcmc_chains.mean)), :auto)
+    scale_data = DataFrame(transpose(hcat(mcmc_chains.scale)), :auto)
+    kappa_sigma_data = DataFrame(transpose(hcat(mcmc_chains.kappa_sigma)), :auto)
+
     rename!(mean_data, col_name_mean)
     rename!(scale_data, col_name_scale)
     rename!(kappa_sigma_data, col_name_kappa_sigma)
@@ -212,7 +213,7 @@ function write_result_file(mcmc_chains::ChainsMixed,
         data_ind_new = vcat(mcmc_chains.ind_param[i], repeat([i], size(mcmc_chains.ind_param[i])[2])')'
         data_ind = vcat(data_ind, data_ind_new)
     end
-    data_ind = convert(DataFrame, data_ind)
+    data_ind = DataFrame(data_ind, :auto)
     println(col_name_ind)
     rename!(data_ind, col_name_ind)
     CSV.write(file_ind, data_ind)
@@ -223,7 +224,7 @@ function write_result_file(mcmc_chains::ChainsMixed,
         data_corr_new = hcat(mcmc_chains.corr[:, :, i], repeat([i], n_ind_param))
         data_corr = vcat(data_corr, data_corr_new)
     end
-    data_corr = convert(DataFrame, data_corr)
+    data_corr = DataFrame(data_corr, :auto)
     rename!(data_corr, col_name_ind)
     CSV.write(file_corr, data_corr)
 
@@ -236,14 +237,14 @@ function write_result_file(mcmc_chains::ChainsMixed,
         data_tmp[:, 2] .= i
         data_log_lik = vcat(data_log_lik, data_tmp)
     end
-    log_lik_data = convert(DataFrame, data_log_lik)
+    log_lik_data = DataFrame(data_log_lik, :auto)
     rename!(log_lik_data, ["log_lik", "id"])
     CSV.write(file_log_lik, log_lik_data)
 
     # Save the run-time 
     data_run_time = zeros(1, 1)
     data_run_time[1, 1] = run_time_sampler.value
-    data_run_time = convert(DataFrame, data_run_time)
+    data_run_time = DataFrame(data_run_time, :auto)
     rename!(data_run_time, ["Run_time"])
     CSV.write(dir_save * "Run_time.csv", data_run_time)
 

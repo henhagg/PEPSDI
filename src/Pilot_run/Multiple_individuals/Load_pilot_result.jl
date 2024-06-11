@@ -53,11 +53,11 @@ function init_param_pilot(pop_param_info::ParamInfoPop,
     n_sigma::Int64 = length(pop_param_info.prior_pop_param_sigma)
 
     # Parameters 
-    corr_mat = convert(Array{FLOAT, 2}, CSV.read(dir_param * "Corr.csv", DataFrame))
-    mean_vec = convert(Array{FLOAT, 2}, CSV.read(dir_param * "Mean.csv", DataFrame))
-    scale_vec = convert(Array{FLOAT, 2}, CSV.read(dir_param * "Scale.csv", DataFrame))
-    kappa_sigma = convert(Array{FLOAT, 2}, CSV.read(dir_param * "Kappa_sigma.csv", DataFrame))
-    ind_param = convert(Array{FLOAT, 2}, CSV.read(dir_param * "Ind.csv", DataFrame))
+    corr_mat = CSV.File(dir_param * "Corr.csv") |> Tables.matrix
+    mean_vec = CSV.File(dir_param * "Mean.csv") |> Tables.matrix
+    scale_vec = CSV.File(dir_param * "Scale.csv") |> Tables.matrix
+    kappa_sigma = CSV.File(dir_param * "Kappa_sigma.csv") |> Tables.matrix
+    ind_param = CSV.File(dir_param * "Ind.csv") |> Tables.matrix
 
     # Population parameters 
     pop_info_new::ParamInfoPop = deepcopy(pop_param_info)
@@ -221,7 +221,7 @@ function init_filter_arr_pilot(filter_opt,
     end
 
     # Create filters 
-    data_particles = convert(Array{Int64, 2}, CSV.read(file_name, DataFrame))[1, :]
+    data_particles = CSV.File(file_name) |> Tables.matrix
     filter_arr::Array{typeof(filter_opt), 1} = Array{typeof(filter_opt), 1}(undef, n_individuals)
     for i in 1:n_individuals
         filter_i = change_filter_opt(filter_opt, data_particles[i], filter_opt.rho)

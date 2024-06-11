@@ -380,7 +380,7 @@ function pvc_mixed(model,
         end
         path_save = dir_save * "Pvc_" * name_cov * string(cov_val) * ".csv"
         full_data = vcat(quant, collect(t_vec)')'
-        data_save = DataFrame(full_data)
+        data_save = DataFrame(full_data, :auto)
         # Ensure correct column-names 
         col_names = Array{String, 1}(undef, model.dim_obs*5 + 1)
         for i in 1:model.dim_obs
@@ -403,13 +403,13 @@ function pvc_mixed(model,
 
         # Save individual parameters 
         col_names_ind = ["c" * string(i) for i in 1:n_ind_param]
-        data_save_ind = convert(DataFrame, ind_param_arr)
+        data_save_ind = DataFrame(ind_param_arr, :auto)
         path_save_ind = dir_save * "Pvc_ind_param.csv"
         rename!(data_save_ind, col_names_ind)
         CSV.write(path_save_ind, data_save_ind)
 
         # Save solution matrix 
-        sol_mat_save = convert(DataFrame, sol_mat)
+        sol_mat_save = DataFrame(sol_mat, :auto)
         CSV.write(dir_save * "Sol_mat.csv", sol_mat_save)
 
     end
@@ -516,7 +516,7 @@ function pvc_mixed_quant(model,
     path_save = dir_save * "Pvc_quant" * cov_tag * ".csv"
 
     full_data = vcat(quant, collect(t_vec)')'
-    data_save = DataFrame(full_data)
+    data_save = DataFrame(full_data, :auto)
     # Ensure correct column-names 
     col_names = Array{String, 1}(undef, model.dim_obs*10 + 1)
     for i in 1:model.dim_obs
