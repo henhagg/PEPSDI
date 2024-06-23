@@ -101,15 +101,15 @@ sde_mod = init_sde_model(gfp_alpha,
 #######################################################################################################
 # Prior for population parameters η = (μ, τ). Note, the priors can be almost any univariate distribution, 
 # but they most be provided as arrays. 
-prior_mean = [Normal(-0.694, 1.0), Normal(-7.014, 1.0), Normal(0.027, 1.0)]
-prior_scale = [Gamma(3.0, 2.0), Gamma(2.0, 2.0), Gamma(3.0, 2.0)]
+prior_mean = [Normal(-0.694, 1.0), Normal(-3, 1.0), Normal(0.027, 1.0)]
+prior_scale = [Gamma(5.0, 0.5), Gamma(5.0, 0.5), Gamma(5.0, 0.5)]
 
 # Prior for strength of measurement error ξ
-prior_sigma = [Normal(-1.6, 1.0)]
+prior_sigma = [Normal(-1.5, 1.0)]
 
 # Prior for cell-constant parameters ĸ. Priors on log-scale 
 # since we infer ĸ on the log-scale 
-prior_kappa = [Normal(5.704, 1.0), Normal(0.751, 1.0), Normal(2.079, 1.0)]
+prior_kappa = [Normal(5, 1.0), Normal(1, 1.0), Normal(3, 1.0)]
     
 # Inference options for η, ĸ and ξ
 pop_param_info = init_pop_param_info(prior_mean, 
@@ -122,7 +122,7 @@ pop_param_info = init_pop_param_info(prior_mean,
                                      log_pop_sigma = true) # ξ inferred to be positive (and default not on log-scale)
 
 # Set up opitons for individual parameters c_i
-ind_val = [-0.694, -7.014, 0.027] # Starting value for each individual 
+ind_val = [-0.694, -3, 0.027] # Starting value for each individual 
 ind_param_info = init_ind_param_info(ind_val,         # Starting value (can also be mean, median, random to sample prior)
                                      3,               # Number of individual parameters  
                                      log_scale=true,  # Individual parameters inferred on log-scale 
