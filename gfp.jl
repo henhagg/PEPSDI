@@ -1,5 +1,5 @@
 # perform cd to PEPSDI directory
-cd("/home/henhagg/PEPSDI")
+cd("/home/henhagg/Documents/PEPSDI")
 
 # Required packages for formulating a model and do inference 
 using Distributions # For placing priors 
@@ -148,7 +148,7 @@ pop_sampler_opt = init_pop_sampler_opt(PopOrnstein(), n_warm_up=50) # η
 # kappa_sigma_sampler_opt = init_kappa_sigma_sampler_opt(KappaSigmaNormal(), variances = [0.01, 0.01 ,0.01]) # 
 
 # Set up struct that stores all file-locations 
-path_data = pwd() * "/Intermediate/Simulated_data/SSA/Multiple_ind/gfp/gfp.csv"
+path_data = pwd() * "/Intermediate/Simulated_data/SSA/Multiple_ind/gfp/observations_pepsdi.csv"
 # Multiple_ind = true -> stored in intermediate under Multiple_individual folder
 file_loc = init_file_loc(path_data, "Example/Gfp_model", multiple_ind=true) 
 
