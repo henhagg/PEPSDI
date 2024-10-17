@@ -88,7 +88,7 @@ See sampler-parameterisation in documentation for [`init_pop_sampler_opt`](@ref)
     μval = [pm.μ for pm in prior_mean]
     mean_val = similar(scale_val)
     for i in eachindex(mean_val)
-        mean_val[i] ~ Normal(μval[i], 1 / scale_val[i])
+        mean_val[i] ~ Normal(μval[i], 1 / sqrt(scale_val[i]))
     end
     
     cov_mat = Diagonal(1 ./ scale_val)
