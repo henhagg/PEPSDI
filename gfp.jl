@@ -93,7 +93,7 @@ sde_mod = init_sde_model(gfp_alpha,
                          1)         # Dimension of observation model dim(Y)
                         #  P_mat)
 
-# tvec, sde_sol = solve_sde_model_n_times(sde_mod, [0,30+0.01], [exp(5.704), 0], exp.([-0.694, -7.014, 0.027]), 0.01)
+# tvec, sde_sol = solve_sde_em(sde_mod, [0,30+0.01], [exp(5.704), 0], (c = exp.([-0.694, -3, 0.027]), kappa = (exp(5.704), 0)), 0.01)
 # observed_sol = log.(exp(0.751) .* sde_sol[2,:] .+ exp(2.079))
 # plot(observed_sol)
 # println(observed_sol[1:3])
@@ -102,7 +102,7 @@ sde_mod = init_sde_model(gfp_alpha,
 # Prior for population parameters η = (μ, τ). Note, the priors can be almost any univariate distribution, 
 # but they most be provided as arrays. 
 prior_mean = [Normal(-0.694, 1.0), Normal(-3, 1.0), Normal(0.027, 1.0)]
-prior_scale = [Gamma(5.0, 0.5), Gamma(5.0, 0.5), Gamma(5.0, 0.5)]
+prior_scale = [Gamma(2.0, 1/0.5), Gamma(2.0, 1/0.5), Gamma(2.0, 1/0.5)]
 
 # Prior for strength of measurement error ξ
 prior_sigma = [Normal(-1.5, 1.0)]
