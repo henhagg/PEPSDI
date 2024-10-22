@@ -202,6 +202,9 @@ function run_filter(filt_opt::BootstrapFilterEm,
     
     # Pre-allocated variables required for looping in the filter 
     x0_mat::Array{FLOAT, 2} = reshape(repeat(model_parameters.x0, n_particles), (sde_mod.dim, n_particles))
+    for i in 1:n_particles
+        @views sde_mod.calc_x0!(x0_mat[:, i], model_parameters.individual_parameters)
+    end
     x_curr::Array{FLOAT, 2} = deepcopy(x0_mat)
     w_unormalised::Array{FLOAT, 1} = Array{FLOAT, 1}(undef, n_particles)
     w_normalised::Array{FLOAT, 1} = Array{FLOAT, 1}(undef, n_particles)
@@ -230,6 +233,7 @@ function run_filter(filt_opt::BootstrapFilterEm,
     solver_obj::BootstrapSolverObj = init_sol_object_bootstrap(Val(sde_mod.dim), Val(sde_mod.dim_obs), sde_mod)
     
     # Special case where t = 0 is not observed 
+    # println("x_curr = ", x_curr[:, 1])
     if t_vec[1] > 0.0
         t_step_info = TimeStepInfo(0.0, t_vec[1], n_step_vec[i_u_prop])
         try 
