@@ -93,11 +93,6 @@ sde_mod = init_sde_model(gfp_alpha,
                          1)         # Dimension of observation model dim(Y)
                         #  P_mat)
 
-# tvec, sde_sol = solve_sde_em(sde_mod, [0,30+0.01], [exp(5.704), 0], (c = exp.([-0.694, -3, 0.027]), kappa = (exp(5.704), 0)), 0.01)
-# observed_sol = log.(exp(0.751) .* sde_sol[2,:] .+ exp(2.079))
-# plot(observed_sol)
-# println(observed_sol[1:3])
-
 #######################################################################################################
 # Prior for population parameters η = (μ, τ). Note, the priors can be almost any univariate distribution, 
 # but they most be provided as arrays. 
@@ -131,8 +126,6 @@ ind_param_info = init_ind_param_info(ind_val,         # Starting value (can also
 # Choosing a particle filter 
 dt = 0.01 # Step-length when simulating the model 
 rho = 0.99 # Correlation level between particles 
-# Use the modified diffusion bridge filter 
-# filter_opt = init_filter(ModDiffusion(), dt, rho=rho)
 filter_opt = init_filter(BootstrapEm(), dt, rho=rho)
 
 # Choose adaptive mcmc-scheme when proposing parameters (ĸ_i, ξ_i) and c_i
